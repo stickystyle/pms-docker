@@ -11,7 +11,11 @@ RUN apt-get update && \
     python-pip \
     software-properties-common
 
-RUN pip install rq
+WORKDIR /opt
+
+ADD . . 
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Cleanup
 RUN apt-get -y autoremove && \
@@ -19,5 +23,3 @@ RUN apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/* && \
     rm -rf /var/tmp/*
-
-ADD ./post_process.py /opt/post_process.py
