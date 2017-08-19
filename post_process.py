@@ -18,8 +18,8 @@ RQ_REDIS_URL = os.getenv("RQ_REDIS_URL", "redis://localhost:6379")
 try:
     log.info("Enqueuing %s", sys.argv[1])
     r = StrictRedis().from_url(url=RQ_REDIS_URL)
-    q = Queue(connection=redis_conn, timeout=RQ_TIMEOUT,
+    q = Queue(connection=redis_conn)
+    q.enqueue("postprocess.post_process", sys.argv[1], timeout=RQ_TIMEOUT,
               result_ttl=RQ_RESULT_TTL)
-    q.enqueue("postprocess.post_process", sys.argv[1])
 except:
    log.exception("Failed to enqueue %s", sys.argv[1]) 
